@@ -1,0 +1,4 @@
+"""
+Defines the CNN architecture. 
+
+"""
