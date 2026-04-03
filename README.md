@@ -1,8 +1,12 @@
 # Cat vs Dog Image Classifier
 
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+
 A binary image classification model built with PyTorch that distinguishes between cats and dogs using transfer learning with ResNet18.
 
-## Project Overview
+## Overview
 
 This project implements a convolutional neural network (CNN) for classifying images as either cats or dogs. Since it was a first project on computer vision, rather than training a model from scratch, it uses a ResNet18 model pretrained on ImageNet and applies fine-tuning only in the final classification layer.
 
@@ -16,11 +20,11 @@ This project implements a convolutional neural network (CNN) for classifying ima
 | Validation Images | 200 (100 per class) |
 | Training Time | ~10 epochs |
 
-## Technical Approach
+## How It Works
 
 ### Transfer Learning with ResNet18
 
-ResNet18 is an 18-layer deep residual network pretrained on ImageNet, a dataset containing over 14 million images across 1,000 categories. The pretrained model has already learned to extract importat visual features such as edges, textures, shapes and object parts.
+ResNet18 is an 18-layer deep residual network pretrained on ImageNet, a dataset containing over 14 million images across 1,000 categories. The pretrained model has already learned to extract important visual features such as edges, textures, shapes and object parts.
 
 The transfer learning strategy employed in this project:
 
@@ -59,9 +63,20 @@ The data augmentation during training helps the model generalize by presenting v
 | Loss Function | CrossEntropyLoss |
 | Batch Size | 32 |
 
-## Training Results
+## Tech Stack
 
-The training history plots below show the model's learning progression over 10 epochs:
+| Component | Technology | Why |
+|-----------|-----------|-----|
+| Language | Python | Industry standard for ML |
+| ML Framework | PyTorch | Flexible, Pythonic deep learning framework |
+| Pretrained Model | ResNet18 (torchvision) | Strong feature extractor, fast fine-tuning |
+| Data Loading | torchvision ImageFolder | Standard image dataset pipeline |
+| Visualization | matplotlib | Training history plots |
+| Image Processing | Pillow | Image loading and transforms |
+
+## Results
+
+### Training History
 
 ![Training History](training_history.png)
 
@@ -77,7 +92,7 @@ Training accuracy improved from approximately 82% to 94% over the course of trai
 
 The validation metrics exceeding training metrics is characteristic of transfer learning with data augmentation. This pattern occurs because training images undergo random augmentation (crops, flips, color changes) making them more challenging to classify, while validation images use simple center crops without augmentation. Additionally, the pretrained features work well out of the box on this task. This pattern indicates the model generalizes well and is not overfitting.
 
-## Model Testing
+### Model Testing
 
 The trained model was evaluated on 20 images (10 cats, 10 dogs) not used during training or validation:
 
@@ -93,7 +108,6 @@ The single misclassification (the number 5 photo in the predict folder) was an i
 
 **Source:** [Kaggle Dogs vs Cats Competition](https://www.kaggle.com/c/dogs-vs-cats/data)
 
-**Structure:**
 ```
 data/
 ├── train/
@@ -106,25 +120,39 @@ data/
 
 Images were manually split from the Kaggle training set, ensuring no overlap between training and validation sets.
 
+## Project Structure
 
-### File Descriptions
+```
+cat-vs-dog-classifier/
+│
+├── dataset.py       # Data loading and preprocessing pipeline
+├── model.py         # Model architecture with ResNet18 transfer learning
+├── train.py         # Training loop with validation and checkpointing
+├── predict.py       # Inference script for classifying new images
+│
+├── data/            # Training and validation images
+├── checkpoints/     # Saved model weights
+└── README.md
+```
 
-| File | Description |
-|------|-------------|
-| `dataset.py` | Data loading and preprocessing pipeline using torchvision transforms and ImageFolder |
-| `model.py` | Model architecture definition with ResNet18 transfer learning setup and layer freezing utilities |
-| `train.py` | Training loop implementation with validation, checkpointing, learning rate scheduling, and visualization |
-| `predict.py` | Inference script for classifying new images using command-line arguments |
+## How to Run
 
-## Requirements
+### Prerequisites
 
 - Python 3.8+
 - PyTorch 2.0+
-- torchvision
-- Pillow
-- matplotlib
+- CUDA GPU (optional, falls back to CPU)
 
-## Usage
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/Massi99RM/cat-vs-dog-classifier.git
+cd cat-vs-dog-classifier
+
+# Install dependencies
+pip install torch torchvision pillow matplotlib
+```
 
 ### Training
 
@@ -146,17 +174,20 @@ train(
 
 ### Inference
 
-Classify a single image using the best trained model in 10 epochs:
+Classify a single image using the best trained model:
+
 ```bash
 python predict.py --image path/to/photo.jpg
 ```
 
 Specify the last model checkpoint to use the full trained model after 10 epochs:
+
 ```bash
 python predict.py --image path/to/photo.jpg --model checkpoints/final_model.pth
 ```
 
 Example output:
+
 ```
 Using device: cuda
 Model loaded from checkpoints/best_model.pth
@@ -169,10 +200,6 @@ photo.jpg
   Prediction: CAT
   Confidence: 97.3%
 ```
-
-## Hardware
-
-Training was performed with CUDA GPU acceleration. The code automatically detects and uses GPU if available, falling back to CPU otherwise.
 
 ## License
 
