@@ -78,7 +78,7 @@ def train_one_epoch(model, train_loader, criterion, optimizer, device):
 def validate(model, val_loader, criterion, device):
     """
     Evaluates the model on the validation set.
-    Training stopped, no gradient computation needed.
+    Model is in eval mode; no gradient computation needed.
     Args:
         model: The neural network
         val_loader: DataLoader containing validation data
@@ -88,7 +88,7 @@ def validate(model, val_loader, criterion, device):
         val_loss: Average loss on validation set
         val_acc: Accuracy as a percentage
     """
-    model.eval()  # Set model to evaluation mode (disables dropout, used only with training images)
+    model.eval()  # Set model to evaluation mode (disables dropout and uses running stats for batch norm)
     
     running_loss = 0.0
     correct_predictions = 0
@@ -197,7 +197,7 @@ def train(data_dir='data', num_epochs=10, batch_size=32, learning_rate=0.001, sa
         lr=learning_rate
     )
     
-    # # Learning rate scheduler, it reduces learning rate when validation loss stops improving/plateaus
+    # Learning rate scheduler, it reduces learning rate when validation loss stops improving/plateaus
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(
         optimizer, 
         mode='min', 
@@ -214,6 +214,7 @@ def train(data_dir='data', num_epochs=10, batch_size=32, learning_rate=0.001, sa
     print("=" * 60)
     
     total_start_time = time.time()
+    val_loss, val_acc = 0.0, 0.0
     
     for epoch in range(num_epochs):
         epoch_start_time = time.time()
@@ -277,7 +278,10 @@ def train(data_dir='data', num_epochs=10, batch_size=32, learning_rate=0.001, sa
     print(f"Final model saved to {final_model_path}")
     
     # Plot training history
-    plot_training_history(train_losses, val_losses, train_accs, val_accs)
+    plot_training_history(
+        train_losses, val_losses, train_accs, val_accs,
+        save_path=os.path.join(save_dir, 'training_history.png')
+    )
     
     return model
 

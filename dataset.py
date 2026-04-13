@@ -25,20 +25,20 @@ def get_train_transforms():
     """
     return transforms.Compose([
         # Resize to slightly larger than target, then crop randomly
-        # Adds positional variation to the training data
+        # Adds spatial variation to the training data
         transforms.Resize(256),
         transforms.RandomCrop(IMAGE_SIZE),
         
         # Randomly flip images horizontally (a cat facing left is still a cat)
         transforms.RandomHorizontalFlip(p=0.5),
         
-        # Small color variations to make the model ready to lighting changes
+        # Small color variations to make the model more robust to lighting changes
         transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
         
         # Convert PIL Image to PyTorch tensor (values become 0-1 range)
         transforms.ToTensor(),
         
-        # Normalize using ImageNet statistics (necessary for pretrained models)
+        # Normalize using ImageNet statistics (required for pretrained models)
         transforms.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)
     ])
 

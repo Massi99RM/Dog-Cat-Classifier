@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Model checkpoints and large files
+checkpoints/
+*.pth
+*.zip
+
+# Data
+data/
+predict/
+
+# OS / IDE
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

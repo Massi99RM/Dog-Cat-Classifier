@@ -8,7 +8,7 @@ A binary image classification model built with PyTorch that distinguishes betwee
 
 ## Overview
 
-This project implements a convolutional neural network (CNN) for classifying images as either cats or dogs. Since it was a first project on computer vision, rather than training a model from scratch, it uses a ResNet18 model pretrained on ImageNet and applies fine-tuning only in the final classification layer.
+This project implements a convolutional neural network (CNN) for classifying images as either cats or dogs. As a first computer vision project, rather than training a model from scratch, it uses a ResNet18 model pretrained on ImageNet and fine-tunes only the final classification layer.
 
 ### Key Results
 
@@ -31,7 +31,7 @@ The transfer learning strategy employed in this project:
 1. Load ResNet18 with pretrained ImageNet weights
 2. Freeze all convolutional layers (approximately 11 million parameters)
 3. Replace the final fully connected layer (originally 1,000 outputs) with a new layer outputting 2 classes (dogs and cats)
-4. Train only the new classification layer (approximately 1,000 parameters)
+4. Train only the new classification layer (about 1,000 parameters)
 
 This approach works because the features learned on ImageNet generalize well to other image classification tasks. The frozen layers act as a fixed feature extractor, while the trainable final layer learns to map those features to our specific classes.
 
@@ -180,7 +180,7 @@ Classify a single image using the best trained model:
 python predict.py --image path/to/photo.jpg
 ```
 
-Specify the last model checkpoint to use the full trained model after 10 epochs:
+Use the final checkpoint (after all 10 epochs) instead of the best one:
 
 ```bash
 python predict.py --image path/to/photo.jpg --model checkpoints/final_model.pth
@@ -192,13 +192,10 @@ Example output:
 Using device: cuda
 Model loaded from checkpoints/best_model.pth
 Trained for 6 epochs
-Validation accuracy: 98.00%
+Validation accuracy: 98.75%
 
-Prediction Results:
-============================================================
-photo.jpg
-  Prediction: CAT
-  Confidence: 97.3%
+Prediction: CAT
+Confidence: 100%
 ```
 
 ## License

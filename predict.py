@@ -111,7 +111,7 @@ def main():
         '--image',
         type=str,
         required=True,
-        help='Path to one or more images to classify'
+        help='Path to one image to classify'
     )
     
     parser.add_argument(

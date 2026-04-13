@@ -1,6 +1,6 @@
 """
 Defines the CNN architecture using transfer learning.
-A pretrained ResNet18 model it's used and only the final classification layer is modified.
+A pretrained ResNet18 model is used, and only the final classification layer is modified.
 """
 
 import torch
